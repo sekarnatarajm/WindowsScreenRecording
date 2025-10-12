@@ -1,0 +1,45 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.36105.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyVideoRecording", "MyVideoRecording\MyVideoRecording.csproj", "{4B0D0C44-E595-4393-833C-EF3FA27CB502}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "LB Screen Recording", "LB Screen Recording\LB Screen Recording.vdproj", "{8DD0CB71-6593-153B-0AED-E77326CA602A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Debug|x64.ActiveCfg = Debug|x64
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Debug|x64.Build.0 = Debug|x64
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Debug|x86.ActiveCfg = Debug|x86
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Debug|x86.Build.0 = Debug|x86
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Release|Any CPU.ActiveCfg = Release|x64
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Release|Any CPU.Build.0 = Release|x64
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Release|x64.ActiveCfg = Release|x64
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Release|x64.Build.0 = Release|x64
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Release|x86.ActiveCfg = Release|x64
+		{4B0D0C44-E595-4393-833C-EF3FA27CB502}.Release|x86.Build.0 = Release|x64
+		{8DD0CB71-6593-153B-0AED-E77326CA602A}.Debug|Any CPU.ActiveCfg = Debug
+		{8DD0CB71-6593-153B-0AED-E77326CA602A}.Debug|x64.ActiveCfg = Debug
+		{8DD0CB71-6593-153B-0AED-E77326CA602A}.Debug|x86.ActiveCfg = Debug
+		{8DD0CB71-6593-153B-0AED-E77326CA602A}.Release|Any CPU.ActiveCfg = Release
+		{8DD0CB71-6593-153B-0AED-E77326CA602A}.Release|x64.ActiveCfg = Release
+		{8DD0CB71-6593-153B-0AED-E77326CA602A}.Release|x86.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C0415A8E-2EEF-41D8-86FF-27DC57F91BE5}
+	EndGlobalSection
+EndGlobal
