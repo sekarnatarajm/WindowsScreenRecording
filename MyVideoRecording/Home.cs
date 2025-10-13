@@ -4,6 +4,7 @@ using MyVideoRecording.Contracts;
 using MyVideoRecording.Enums;
 using MyVideoRecording.Model;
 using MyVideoRecording.Services;
+using Newtonsoft.Json;
 using NLog;
 using ScreenRecorderLib;
 using SocketIOClient;
@@ -62,6 +63,8 @@ namespace MyVideoRecording
         {
             try
             {
+                string appVersion = Application.ProductVersion;
+
                 this.FormClosing += MainForm_FormClosing;
                 logger.Info("Received request for Home_Load");
                 Task.Run(() => ProcessApiCallsAsync()).Wait();
@@ -391,8 +394,35 @@ namespace MyVideoRecording
                 {
                 };
 
-                socket.On("joinMetting", response =>
+                socket.On("video-state-change", data =>
                 {
+                    try
+                    {
+                        var json = data?.ToString();
+                        if (string.IsNullOrEmpty(json))
+                        {
+                            return;
+                        }
+                        var videoState = JsonConvert.DeserializeObject<VideoStateChange>(json);
+                        if (videoState == null)
+                        {
+                            return;
+                        }
+                        if (rec != null)
+                        {
+                            if (rec != null && string.Equals(videoState.Role, AppConstant.MutedRole, StringComparison.OrdinalIgnoreCase))
+                            {
+                                if (videoState.Muted)
+                                    rec.Pause();
+                                else
+                                    rec.Resume();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.Error(ex, $"Error occured while processing video-state-change, ErrorMessage : {ex.Message}");
+                    }
                 });
 
                 socket.OnError += (sender, e) =>

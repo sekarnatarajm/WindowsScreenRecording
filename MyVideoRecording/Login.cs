@@ -56,10 +56,10 @@ namespace MyVideoRecording
 
         private void Login_Load(object sender, EventArgs e)
         {
-            textUsername.Text = "ajay.009@lilbrahmas.com";
-            textPassword.Text = "lilbrahmasdev";
-            //textUsername.Text = "";
-            //textPassword.Text = "";
+            //textUsername.Text = "ajay.009@lilbrahmas.com";
+            //textPassword.Text = "lilbrahmasdev";
+            textUsername.Text = "";
+            textPassword.Text = "";
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

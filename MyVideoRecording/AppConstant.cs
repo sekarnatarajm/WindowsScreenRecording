@@ -8,6 +8,7 @@ namespace MyVideoRecording
 {
     public static class AppConstant
     {
+        public static string MutedRole = "tutor";
         public static string TempFolderName = "LBScreenRecording";
         public static string TimeFormatForFile = "hhmm";
         public static string DateFormatForFile = "yyyyMMdd";
