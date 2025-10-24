@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyVideoRecording.Model
+namespace LBScreenRecording.Model
 {
     public class SessionStatus
     {

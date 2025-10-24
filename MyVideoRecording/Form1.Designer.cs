@@ -1,4 +1,4 @@
-﻿namespace MyVideoRecording
+﻿namespace LBScreenRecording
 {
     partial class Form1
     {

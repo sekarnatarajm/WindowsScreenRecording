@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace MyVideoRecording.Model
+namespace LBScreenRecording.Model
 {
     public class LoginResponse : Result
     {

@@ -1,4 +1,4 @@
-﻿using MyVideoRecording.Common;
+﻿using LBScreenRecording.Common;
 using NLog;
 using System;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace MyVideoRecording.Services
+namespace LBScreenRecording.Services
 {
     public class LilbrahmasFileService
     {

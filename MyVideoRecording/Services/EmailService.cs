@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Mail;
 
-namespace MyVideoRecording.Services
+namespace LBScreenRecording.Services
 {
     public class EmailService
     {

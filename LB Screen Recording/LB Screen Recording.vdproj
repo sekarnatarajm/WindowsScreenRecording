@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:LB Screen Recording"
+"ProjectName" = "8:LBScreenRecording.Setup"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -1035,6 +1035,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7EA75FAF726CD15B419E3CCBDCD9A4DE"
+        "OwnerKey" = "8:_F003AA8D38FD4B058AF8B14FC13358BE"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_85713BDE56EDF2982D4E00B618DE609C"
         "OwnerKey" = "8:_F003AA8D38FD4B058AF8B14FC13358BE"
         "MsmSig" = "8:_UNDEFINED"
@@ -1108,12 +1114,6 @@
         "Entry"
         {
         "MsmKey" = "8:_98BFBF84854C57319BC4C2AB6C29BC64"
-        "OwnerKey" = "8:_F003AA8D38FD4B058AF8B14FC13358BE"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9AFF9EF0BD8FFB43C61180506B7B5187"
         "OwnerKey" = "8:_F003AA8D38FD4B058AF8B14FC13358BE"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -2686,7 +2686,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_9AFF9EF0BD8FFB43C61180506B7B5187"
+        "OwnerKey" = "8:_7EA75FAF726CD15B419E3CCBDCD9A4DE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2960,6 +2960,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -2984,6 +2992,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -5514,6 +5530,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7EA75FAF726CD15B419E3CCBDCD9A4DE"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:ScreenRecorderLib, Version=1.0.8811.41678, Culture=neutral, processorArchitecture=x86"
+                "ScatterAssemblies"
+                {
+                    "_7EA75FAF726CD15B419E3CCBDCD9A4DE"
+                    {
+                    "Name" = "8:ScreenRecorderLib.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:ScreenRecorderLib.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_69C5534A639847CCB10B8129314CEF79"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_85713BDE56EDF2982D4E00B618DE609C"
             {
             "AssemblyRegister" = "3:1"
@@ -5869,37 +5916,6 @@
                     }
                 }
             "SourcePath" = "8:System.Data.Common.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_69C5534A639847CCB10B8129314CEF79"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9AFF9EF0BD8FFB43C61180506B7B5187"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ScreenRecorderLib, Version=1.0.8811.41649, Culture=neutral, processorArchitecture=AMD64"
-                "ScatterAssemblies"
-                {
-                    "_9AFF9EF0BD8FFB43C61180506B7B5187"
-                    {
-                    "Name" = "8:ScreenRecorderLib.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:ScreenRecorderLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_69C5534A639847CCB10B8129314CEF79"

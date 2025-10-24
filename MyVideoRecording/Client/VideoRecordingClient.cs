@@ -1,12 +1,12 @@
-﻿using MyVideoRecording.Enums;
-using MyVideoRecording.Model;
+﻿using LBScreenRecording.Enums;
+using LBScreenRecording.Model;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MyVideoRecording.Client
+namespace LBScreenRecording.Client
 {
     public class VideoRecordingClient
     {

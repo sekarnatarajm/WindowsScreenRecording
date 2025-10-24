@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MyVideoRecording.Client;
-using MyVideoRecording.Contracts;
-using MyVideoRecording.Services;
+using LBScreenRecording.Client;
+using LBScreenRecording.Contracts;
+using LBScreenRecording.Services;
 using NLog;
 using System;
 using System.Windows.Forms;
 
-namespace MyVideoRecording
+namespace LBScreenRecording
 {
     internal static class Program
     {

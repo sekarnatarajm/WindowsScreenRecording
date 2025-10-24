@@ -1,7 +1,7 @@
 ﻿
-using MyVideoRecording.Model;
+using LBScreenRecording.Model;
 
-namespace MyVideoRecording.Contracts
+namespace LBScreenRecording.Contracts
 {
     public interface IScreenRecording
     {

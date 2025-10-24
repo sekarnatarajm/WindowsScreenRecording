@@ -1,4 +1,4 @@
-﻿namespace MyVideoRecording
+﻿namespace LBScreenRecording
 {
     partial class Login
     {
@@ -102,7 +102,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::MyVideoRecording.Properties.Resources.lil_Brah_logo_full;
+            this.pictureBox1.Image = global::LBScreenRecording.Properties.Resources.lil_Brah_logo_full;
             this.pictureBox1.Location = new System.Drawing.Point(45, 130);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(162, 167);

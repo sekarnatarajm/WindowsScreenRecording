@@ -1,4 +1,4 @@
-﻿namespace MyVideoRecording.Common
+﻿namespace LBScreenRecording.Common
 {
     internal static class APIURL
     {

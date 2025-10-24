@@ -1,9 +1,9 @@
-﻿using MyVideoRecording.Contracts;
-using MyVideoRecording.Model;
+﻿using LBScreenRecording.Contracts;
+using LBScreenRecording.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MyVideoRecording.Services
+namespace LBScreenRecording.Services
 {
     public class UserService : IUserService
     {

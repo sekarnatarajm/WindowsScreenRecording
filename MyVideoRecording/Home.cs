@@ -1,9 +1,9 @@
-﻿using MyVideoRecording.Client;
-using MyVideoRecording.Common;
-using MyVideoRecording.Contracts;
-using MyVideoRecording.Enums;
-using MyVideoRecording.Model;
-using MyVideoRecording.Services;
+﻿using LBScreenRecording.Client;
+using LBScreenRecording.Common;
+using LBScreenRecording.Contracts;
+using LBScreenRecording.Enums;
+using LBScreenRecording.Model;
+using LBScreenRecording.Services;
 using Newtonsoft.Json;
 using NLog;
 using ScreenRecorderLib;
@@ -17,9 +17,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Mod = MyVideoRecording.Model;
+using Mod = LBScreenRecording.Model;
 
-namespace MyVideoRecording
+namespace LBScreenRecording
 {
     public partial class Home : Form
     {

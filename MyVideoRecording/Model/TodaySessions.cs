@@ -1,8 +1,8 @@
 ﻿using System;
-using MyVideoRecording.Enums;
+using LBScreenRecording.Enums;
 
 
-namespace MyVideoRecording.Model
+namespace LBScreenRecording.Model
 {
     public class TodayScheduledSessions
     {

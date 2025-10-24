@@ -1,7 +1,7 @@
-﻿using MyVideoRecording.Common;
-using MyVideoRecording.Contracts;
-using MyVideoRecording.Model;
-using MyVideoRecording.Services;
+﻿using LBScreenRecording.Common;
+using LBScreenRecording.Contracts;
+using LBScreenRecording.Model;
+using LBScreenRecording.Services;
 using Newtonsoft.Json;
 using NLog;
 using System;
@@ -11,9 +11,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Mod = MyVideoRecording.Model;
+using Mod = LBScreenRecording.Model;
 
-namespace MyVideoRecording.Client
+namespace LBScreenRecording.Client
 {
     public class UserClient : IUserClient
     {

@@ -1,13 +1,13 @@
-﻿using MyVideoRecording.Contracts;
-using MyVideoRecording.Services;
+﻿using LBScreenRecording.Contracts;
+using LBScreenRecording.Services;
 using NLog;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Mod = MyVideoRecording.Model;
+using Mod = LBScreenRecording.Model;
 
-namespace MyVideoRecording
+namespace LBScreenRecording
 {
     public partial class Login : Form
     {
@@ -56,10 +56,10 @@ namespace MyVideoRecording
 
         private void Login_Load(object sender, EventArgs e)
         {
-            //textUsername.Text = "ajay.009@lilbrahmas.com";
-            //textPassword.Text = "lilbrahmasdev";
-            textUsername.Text = "";
-            textPassword.Text = "";
+            textUsername.Text = "ajay.009@lilbrahmas.com";
+            textPassword.Text = "lilbrahmasdev";
+            //textUsername.Text = "";
+            //textPassword.Text = "";
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
