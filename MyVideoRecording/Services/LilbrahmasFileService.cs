@@ -17,7 +17,7 @@ namespace MyVideoRecording.Services
             _client.BaseAddress = new Uri(APIURL.BaseUrl);
             _client.DefaultRequestHeaders.Accept.Clear();
         }
-        public async Task<bool> UploadFileToLilBrahmasServer(string accessToken, string videoPath, string sessionTime,string employee_id)
+        public async Task<bool> UploadFileToLilBrahmasServer(string accessToken, string videoPath, string sessionTime, string employee_id)
         {
             string trackingIdentifier = $"{sessionTime}-{videoPath}";
             try
@@ -44,7 +44,7 @@ namespace MyVideoRecording.Services
                     return true;
                 }
                 else
-                {                    
+                {
                     int stais = (int)response.StatusCode;
                     string respo = response.ReasonPhrase;
                     string responseBody = await response.Content.ReadAsStringAsync();
@@ -55,10 +55,10 @@ namespace MyVideoRecording.Services
             catch (Exception ex)
             {
                 _logger.Error($"[{trackingIdentifier}]::While UploadFileToLilBrahmasServer error occured, ErrorMessage : {ex.Message}", ex);
-                //EmailService emailService = new EmailService();
-                //string subject = "Lilbrahmas Screen Recording Error";
-                //string body = $"While Uploading File To Lil-Brahmas Server error occured, Video File Path : {videoPath}. </br> Employee Id : {employee_id}";
-                //emailService.SendEmail(subject, body);
+                EmailService emailService = new EmailService();
+                string subject = "Lilbrahmas Screen Recording Error";
+                string body = $"While Uploading File To Lil-Brahmas Server error occured, Video File Path : {videoPath}. </br> Employee Id : {employee_id}";
+                await Task.Run(() => emailService.SendEmail(subject, body));
                 return false;
             }
         }

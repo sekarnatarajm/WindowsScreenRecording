@@ -4,6 +4,7 @@ using MyVideoRecording.Contracts;
 using MyVideoRecording.Enums;
 using MyVideoRecording.Model;
 using MyVideoRecording.Services;
+using Newtonsoft.Json;
 using NLog;
 using ScreenRecorderLib;
 using SocketIOClient;
@@ -13,7 +14,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Mod = MyVideoRecording.Model;
@@ -24,20 +25,18 @@ namespace MyVideoRecording
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly IUserService _userService;
-        //private readonly IScreenRecording _screenRecording;
         public UserDetail userDetail { get; set; } = new UserDetail();
         public List<ScheduledClass> scheduledClassList { get; set; } = new List<ScheduledClass>();
         public List<TodayScheduledSessions> todayScheduledSessions { get; set; } = new List<TodayScheduledSessions>();
         public Mod.LoginResponse loginResponse { get; set; } = new Mod.LoginResponse();
         public bool isLogout { get; set; } = false;
-        public bool isKeepCheckForSession { get; set; } = true;
+        public bool isKeepCheckForSession { get; set; } = true; //Checking the class status
         public int previousSessionStatusId = 0;
         public bool isLogoutOrFormClosed { get; set; } = false;
         private FileUploadStatus FileUploadedStatus { get; set; }
         private ClickEventType ClickedEventType { get; set; }
         private RecordingStatus currentRecordingStatus { get; set; }
         SocketIOClient.SocketIO socket = null;
-
 
         #region Screen Recording
         private SessionStatus sessionStatus;
@@ -49,23 +48,24 @@ namespace MyVideoRecording
         private static string employee_id = string.Empty;
         #endregion
 
-
-        public Home(IUserService userService) //IScreenRecording screenRecording
+        public Home(IUserService userService)
         {
             InitializeComponent();
-            InitializeScreenRecording();
+            SetupScreenRecording();
             _userService = userService;
-            //_screenRecording = screenRecording;
         }
 
         private void Home_Load(object sender, EventArgs e)
         {
             try
             {
-                this.FormClosing += MainForm_FormClosing;
                 logger.Info("Received request for Home_Load");
+                string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+                string appVersion = Application.ProductVersion;
+                this.FormClosing += MainForm_FormClosing;
                 Task.Run(() => ProcessApiCallsAsync()).Wait();
-                Task.Run(() => GetScheduledDataAsync());
+                PrepareTodaySessionData();
+                Task.Run(() => ScheduleSessionRecordingAsync());
                 if (userDetail != null)
                 {
                     lbl_employeeId.Text = userDetail.employee_id;
@@ -101,11 +101,11 @@ namespace MyVideoRecording
                 MessageBox.Show($"While processing the ProcessApiCallsAsync error occurred, ErrorMessage: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        public async Task GetScheduledDataAsync()
+        public void PrepareTodaySessionData()
         {
             try
             {
-                logger.Info("Received request for GetScheduledDataAsync");
+                logger.Info("Received request for PrepareTodaySessionData");
                 if (scheduledClassList != null && scheduledClassList.Any())
                 {
                     int index = 1;
@@ -129,15 +129,13 @@ namespace MyVideoRecording
                             });
                         }
                     }
-                    GridDataUpdate();
-                    await ScheduleTheRecordingAsync();
-
+                    UpdateTodaySessionGridData();
                 }
             }
             catch (Exception ex)
             {
-                logger.Error(ex, $"Error occured while processing GetScheduledDataAsync, ErrorMessage : {ex.Message}");
-                MessageBox.Show($"An error occurred in GetScheduledDataAsync, ErrorMessage: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, $"Error occured while processing PrepareTodaySessionData, ErrorMessage : {ex.Message}");
+                MessageBox.Show($"An error occurred in PrepareTodaySessionData, ErrorMessage: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         public async Task GetUserDataAsync()
@@ -164,6 +162,11 @@ namespace MyVideoRecording
                 logger.Error(ex, $"Error occured while processing GetTodaySessionsAsync, ErrorMessage : {ex.Message}");
             }
         }
+        private async Task Logout()
+        {
+            logger.Info("Received request for Logout");
+            isLogout = await _userService.Logout(loginResponse.AccessToken, userDetail.employee_id);
+        }
         private (int hour, int minute) GetTime(string time)
         {
             if (!string.IsNullOrEmpty(time) && time.Contains(':'))
@@ -172,28 +175,28 @@ namespace MyVideoRecording
             }
             return (default, default);
         }
-        public void GridDataUpdate()
+        public void UpdateTodaySessionGridData()
         {
-            logger.Info("Received request for GridDataUpdate");
+            logger.Info("Received request for UpdateTodaySessionGridData");
             if (dataTodaySessions.InvokeRequired)
             {
                 dataTodaySessions.Invoke(new MethodInvoker(delegate
                 {
-                    SessionDataBinding();
+                    TodaySessionDataBinding();
                 }));
             }
             else
             {
                 if (todayScheduledSessions != null && todayScheduledSessions.Any())
                 {
-                    SessionDataBinding();
+                    TodaySessionDataBinding();
                 }
             }
         }
 
-        private void SessionDataBinding()
+        private void TodaySessionDataBinding()
         {
-            logger.Info("Received request for SessionDataBinding");
+            logger.Info("Received request for TodaySessionDataBinding");
             dataTodaySessions.DataSource = todayScheduledSessions;
             dataTodaySessions.ReadOnly = true;
             dataTodaySessions.Columns["Index"].HeaderText = "Sl No";
@@ -216,7 +219,6 @@ namespace MyVideoRecording
 
             dataTodaySessions.Columns["Id"].Visible = false;
             dataTodaySessions.Columns["ClassStatus"].Visible = false;
-            //dataTodaySessions.Columns["RecordingStatus"].Visible = true;
 
             dataTodaySessions.ColumnHeadersDefaultCellStyle.Font = new Font("Arial", 11, FontStyle.Bold);
             dataTodaySessions.DefaultCellStyle.Font = new Font("Arial", 10);
@@ -225,9 +227,9 @@ namespace MyVideoRecording
             dataTodaySessions.Update();
         }
 
-        public async Task ScheduleTheRecordingAsync()
+        public async Task ScheduleSessionRecordingAsync()
         {
-            logger.Info("Received request for ScheduleTheRecordingAsync");
+            logger.Info("Received request for ScheduleSessionRecordingAsync");
             Mod.SessionStatus sessionStatus = new Mod.SessionStatus();
             VideoRecordingClient videoService = new VideoRecordingClient();
             isKeepCheckForSession = true;
@@ -274,12 +276,12 @@ namespace MyVideoRecording
                             }
                         }
                     }
-                    GridDataUpdate();
+                    UpdateTodaySessionGridData();
                     await Task.Delay(AppConstant.RecordingTaskDelayTime);
                 }
                 catch (Exception ex)
                 {
-                    logger.Error(ex, $"Error occured while processing ScheduleTheRecordingAsync, ErrorMessage : {ex.Message}");
+                    logger.Error(ex, $"Error occured while processing ScheduleSessionRecordingAsync, ErrorMessage : {ex.Message}");
                 }
             }
         }
@@ -292,35 +294,30 @@ namespace MyVideoRecording
             }
             else
             {
-                ClickedEventType = ClickEventType.Logout;
-                isKeepCheckForSession = false;
-                StopScreenRecording();
-                while (true)
+                DisconnectLBSocket();
+                var recordStatus = GetRecordingStatus();
+                if (recordStatus == RecordingStatus.Started)
                 {
-                    if (FileUploadedStatus == FileUploadStatus.Completed || currentRecordingStatus == RecordingStatus.NoRecording)
+                    ClickedEventType = ClickEventType.Logout;
+                    FileUploadedStatus = FileUploadStatus.Started;
+                    isKeepCheckForSession = false;
+                    StopScreenRecording();
+                    while (true)
                     {
-                        break;
+                        if (FileUploadedStatus == FileUploadStatus.Completed || FileUploadedStatus == FileUploadStatus.Pending)
+                        {
+                            break;
+                        }
                     }
-                }
-                isLogout = false;
-                Task.Run(() => Logout()).Wait();
-                if (isLogout)
-                {
-                    socket.DisconnectAsync();
-                    this.Hide();
-                    Login login = new Login(_userService);
-                    login.Show();
+                    Task.Run(() => Logout());
+                    todayScheduledSessions = new List<TodayScheduledSessions>();
+                    ShowLoginPage();
                 }
                 else
                 {
-                    MessageBox.Show($"An error occurred while logout", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    ShowLoginPage();
                 }
             }
-        }
-
-        private async Task Logout()
-        {
-            isLogout = await _userService.Logout(loginResponse.AccessToken, userDetail.employee_id);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -333,17 +330,24 @@ namespace MyVideoRecording
             }
             else
             {
-                ClickedEventType = ClickEventType.WindowClose;
-                isKeepCheckForSession = false;
-                StopScreenRecording();
-                while (true)
+                DisconnectLBSocket();
+                var recordStatus = GetRecordingStatus();
+                if (recordStatus == RecordingStatus.Started)
                 {
-                    if (FileUploadedStatus == FileUploadStatus.Completed || currentRecordingStatus == RecordingStatus.NoRecording)
+                    ClickedEventType = ClickEventType.WindowClose;
+                    FileUploadedStatus = FileUploadStatus.Started;
+                    isKeepCheckForSession = false;
+                    StopScreenRecording();
+                    while (true)
                     {
-                        break;
+                        if (FileUploadedStatus == FileUploadStatus.Completed || FileUploadedStatus == FileUploadStatus.Pending)
+                        {
+                            break;
+                        }
                     }
                 }
-                socket.DisconnectAsync();
+                todayScheduledSessions = new List<TodayScheduledSessions>();
+                Task.Run(() => Logout());
             }
         }
         public void StopScreenRecording()
@@ -358,6 +362,7 @@ namespace MyVideoRecording
             else
             {
                 currentRecordingStatus = RecordingStatus.NoRecording;
+                FileUploadedStatus = FileUploadStatus.Pending;
             }
         }
         public async Task ConnectLBSocketAsync(string accessToken)
@@ -366,10 +371,10 @@ namespace MyVideoRecording
             {
                 SessionRoomOptions roomOptions = new SessionRoomOptions()
                 {
-                    roomId = $"tutor-{userDetail.id}",
+                    roomId = $"{SocketEvent.Tutor}-{userDetail.id}",
                     connection = new Connection()
                     {
-                        role = "recorder",
+                        role = SocketEvent.AppRole,
                         data = new { identity = $"r-{userDetail.id}" }
                     }
                 };
@@ -379,44 +384,31 @@ namespace MyVideoRecording
                     Auth = new { token = accessToken }
                 });
 
-                socket.OnConnected += (sender, e) =>
-                {
-                };
-
-                socket.On("message", response =>
-                {
-                });
-
-                socket.OnDisconnected += (sender, reason) =>
-                {
-                };
-
-                socket.On("joinMetting", response =>
-                {
-                });
+                socket.On(SocketEvent.MuteUnMuteEventName, OnAudioStateChangeEvent);
 
                 socket.OnError += (sender, e) =>
                 {
+                    logger.Error($"Error occured while connecting lb socket, Message : {e}, Sender : {sender}");
                 };
 
+                socket.OnConnected += async (sender, e) =>
+                {
+                    if (socket.Connected)
+                    {
+                        await socket.EmitAsync(SocketEvent.JoinMeetingEventName, roomOptions);
+                    }
+                };
                 await socket.ConnectAsync();
-
-                // Emit a message to the server
-                await socket.EmitAsync("join-room", roomOptions);
-
-                //await socket.DisconnectAsync();
             }
             catch (Exception ex)
             {
-                throw;
+                logger.Error(ex, $"Error occured while connecting lb socket async, ErrorMessage : {ex.Message}");
             }
         }
 
         #region Screen Recording
-        private void InitializeScreenRecording()
+        private void SetupScreenRecording()
         {
-            //This is how you can select audio devices. If you want the system default device,
-            //just leave the AudioInputDevice or AudioOutputDevice properties unset or pass null or empty string.
             var audioInputDevices = Recorder.GetSystemAudioDevices(AudioDeviceSource.All);
             var audioOutputDevices = Recorder.GetSystemAudioDevices(AudioDeviceSource.All);
             string selectedAudioInputDevice = audioInputDevices.Count > 0 ? audioInputDevices.First().DeviceName : null;
@@ -457,7 +449,6 @@ namespace MyVideoRecording
             rec.OnRecordingComplete += Rec_OnRecordingComplete;
             rec.OnStatusChanged += Rec_OnStatusChanged;
         }
-
         private static void Rec_OnStatusChanged(object sender, RecordingStatusEventArgs e)
         {
             switch (e.Status)
@@ -477,7 +468,6 @@ namespace MyVideoRecording
                     break;
             }
         }
-
         private void Rec_OnRecordingComplete(object sender, RecordingCompleteEventArgs e)
         {
             _isRecording = false;
@@ -493,10 +483,10 @@ namespace MyVideoRecording
                 Task.Run(() => UploadFile(e.FilePath, currentSessionTime, accessToken, employee_id));
             }
         }
-        public async Task UploadFile(string filePath, string currentSessionTime, string accessToken, string employeeId)
+        public async Task<bool> UploadFile(string filePath, string currentSessionTime, string accessToken, string employeeId)
         {
             LilbrahmasFileService lilbrahmasFileService = new LilbrahmasFileService();
-            var fileUploadData = await lilbrahmasFileService.UploadFileToLilBrahmasServer(accessToken, filePath, currentSessionTime, employee_id);
+            return await lilbrahmasFileService.UploadFileToLilBrahmasServer(accessToken, filePath, currentSessionTime, employee_id);
         }
         private static void Rec_OnRecordingFailed(object sender, RecordingFailedEventArgs e)
         {
@@ -515,8 +505,62 @@ namespace MyVideoRecording
         public void StopRecording(bool isLogoutOrFormClosedEvent = false)
         {
             isLogoutOrFormClosed = isLogoutOrFormClosedEvent;
-            rec.Stop();
+            if (rec.Status == RecorderStatus.Recording || rec.Status == RecorderStatus.Paused)
+            {
+                rec.Stop();
+            }
+            else
+            {
+                FileUploadedStatus = FileUploadStatus.Pending;
+            }
         }
         #endregion
+
+        public void OnAudioStateChangeEvent(SocketIOResponse socketResponse)
+        {
+            try
+            {
+                var json = socketResponse?.ToString();
+                if (string.IsNullOrEmpty(json))
+                {
+                    return;
+                }
+                var videoState = JsonConvert.DeserializeObject<VideoStateChange>(json);
+                if (videoState == null)
+                {
+                    return;
+                }
+                if (rec != null && (rec.Status == RecorderStatus.Recording || rec.Status == RecorderStatus.Paused))
+                {
+                    if (string.Equals(videoState.Role, SocketEvent.MutedRole, StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (videoState.Muted)
+                            rec.Pause();
+                        else
+                            rec.Resume();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"Error occured while processing video-state-change, ErrorMessage : {ex.Message}");
+            }
+        }
+        public RecordingStatus GetRecordingStatus()
+        {
+            var currentSession = todayScheduledSessions?.FirstOrDefault(f => f.Id == previousSessionStatusId);
+            return currentSession != null ? currentSession.RecordingStatus : RecordingStatus.NoRecording;
+        }
+        public void ShowLoginPage()
+        {
+            this.Hide();
+            Login login = new Login(_userService);
+            login.Show();
+        }
+        public void DisconnectLBSocket()
+        {
+            if (socket.Connected)
+                socket.DisconnectAsync();
+        }
     }
 }

@@ -273,6 +273,7 @@
     <Compile Include="Client\UserClient.cs" />
     <Compile Include="Client\VideoRecordingClient.cs" />
     <Compile Include="Common\APIURL.cs" />
+    <Compile Include="Common\SocketEvent.cs" />
     <Compile Include="Contracts\IScreenRecording.cs" />
     <Compile Include="Contracts\IUserClient.cs" />
     <Compile Include="Contracts\IUserService.cs" />
@@ -305,6 +306,7 @@
     <Compile Include="Model\SessionStatus.cs" />
     <Compile Include="Model\TodaySessions.cs" />
     <Compile Include="Model\UserDetail.cs" />
+    <Compile Include="Model\VideoStateChange.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EmailService.cs" />

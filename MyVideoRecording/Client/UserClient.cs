@@ -141,8 +141,8 @@ namespace MyVideoRecording.Client
                 new ScheduledClass()
                 {
                         id = 1,
-                        start_time = "22:30:00",
-                        end_time = "22:31:00",
+                        start_time = "23:00:00",
+                        end_time = "23:50:00",
                         active_students_count = 4,
                         user_id = 89
                 },
