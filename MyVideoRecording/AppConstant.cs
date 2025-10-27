@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MyVideoRecording
+﻿namespace MyVideoRecording
 {
     public static class AppConstant
     {
@@ -21,13 +15,7 @@ namespace MyVideoRecording
         public static string MediaType = "video/mp4";
 
         public static int RecordingTaskDelayTime = 5000;
-        public static string TodayDateForVideoUpload = "yyyy-MM-dd";
-
-        public static string UserName = "lilbrahmas31@gmail.com";
-        public static string Password = "EC7FC4D913F9433ACA43E1563ADE3089A3CC";
-        public static string FromEmail = "lilbrahmas31@gmail.com";
-        public static string ToEmail = "parentmeeting@lilbrahmas.com";
-        public static string CcEmail = "lilbrahmas31@gmail.com";
+        public static string TodayDateForVideoUpload = "yyyy-MM-dd";        
     }
     public static class VideoOption
     {
@@ -36,5 +24,13 @@ namespace MyVideoRecording
         public static int Quality = 50;
         public static int Bitrate = 20000;
         public static int Framerate = 15;
+    }
+    public static class SmtpConfig
+    {
+        public static string UserName = "lilbrahmas31@gmail.com";
+        public static string Password = "EC7FC4D913F9433ACA43E1563ADE3089A3CC";
+        public static string FromEmail = "lilbrahmas31@gmail.com";
+        public static string ToEmail = "parentmeeting@lilbrahmas.com";
+        public static string CcEmail = "lilbrahmas31@gmail.com";
     }
 }
